@@ -1,0 +1,19 @@
+@Library('my-shared-lib')_
+pipeline {
+agent any
+	parameters{
+	choice(name: 'buildstage', choices: ['compile', 'test', 'package', 'clean install'], description: 'maven lifecycle')
+	}
+	stages {
+		stage("checkout"){
+			steps  {
+				checkoutProject(url: "https://github.com/devopspractice45a3/game-of-life")
+			}
+		}
+		stage("build"){
+			steps  {
+				buildProject(tool: "maven", phase: params.buildstage)
+			}
+		}
+	}
+}
